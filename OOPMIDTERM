@@ -1,0 +1,179 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class midterOOP
+{
+    //instance variable
+    boolean exit;
+    ArrayList <String> names = new ArrayList <>();
+    ArrayList <String> ages = new ArrayList <>();
+        
+    public static void main(String[] args) 
+    {
+        midterOOP menu = new midterOOP();
+       
+        menu.runMenu();
+    }
+    
+    public void runMenu()
+    {
+        printHeader();
+        while(!exit)
+        {
+            printMenu();
+            int choice = getMenuChoice();
+            performAction(choice);
+        }
+    }
+        
+    private void printHeader() 
+    {
+        System.out.println("+-----------------------------------+");
+        System.out.println("|        Welcome to our             |");
+        System.out.println("|        Survey Entry               |");
+        System.out.println("+-----------------------------------+");
+    }
+
+    private void printMenu() 
+    {
+        System.out.println("Please make a selection");
+        System.out.println("1) ADD ENTRY");
+        System.out.println("2) DELETE ENTRY");
+        System.out.println("3) VIEW ALL ENTRY");
+        System.out.println("4) UPDATE ENTRY");
+        System.out.println("0) Exit");
+    }
+ 
+    private int getMenuChoice() 
+    {
+        Scanner keyboard = new Scanner(System.in);
+        int choice;
+        choice = keyboard.nextInt();
+        return choice;
+    }
+    
+    private void performAction(int choice) 
+    {
+        switch (choice) 
+        {
+            case 0:
+                System.out.println("Thank you for using our application.");
+                EXIT();
+                break;
+            case 1: 
+                ADDENTRY();
+            break;
+            case 2:
+                DELETEENTRY();
+                break;
+            case 3:
+                VIEWENTRY(true);
+                break;
+            case 4:
+                UPDATEENTRY();
+                break;   
+            default:
+                System.out.println("Unknown error has occured.");
+        }
+    }
+    
+    private String askQuestion(String question, List<String> answers) 
+    {
+        String response = "";
+        Scanner keyboard = new Scanner(System.in);
+        boolean choices = ((answers == null) || answers.size() == 0) ? false : true;
+        boolean firstRun = true;
+        do {
+            if (!firstRun) {
+                System.out.println("Invalid selection. Please try again.");
+            }
+            System.out.print(question);
+            if (choices) {
+                System.out.print("(");
+                for (int i = 0; i < answers.size() - 1; ++i) {
+                    System.out.print(answers.get(i) + "/");
+                }
+                System.out.print(answers.get(answers.size() - 1));
+                System.out.print("): ");
+            }
+            response = keyboard.nextLine();
+            firstRun = false;
+            if (!choices) {
+                break;
+            }
+        } while (!answers.contains(response));
+        return response;
+    }
+    
+    private void ADDENTRY()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        
+        System.out.println("Enter Your Name: " );
+        String name = keyboard.nextLine();
+        System.out.println("Enter Your Age: " );
+        String age = keyboard.nextLine();
+       
+        names.add(name);
+        ages.add(age);
+        
+        System.out.println(" press any key to continue.....");
+        keyboard.nextLine();
+    }
+    
+    private void VIEWENTRY(boolean prompt)
+    {
+        
+        System.out.println("LIST OF ENTRIES");
+        for (int i = 0; i < names.size(); i++)
+        {
+            System.out.println(i + 1 + ". " + names.get(i) + " is " + ages.get(i) + " years old.");
+        }
+        
+        if (prompt)
+        {
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println(" press any key to continue.....");
+            keyboard.nextLine();
+        }
+    }
+    
+    private void DELETEENTRY()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        VIEWENTRY(false);
+        System.out.println("which number to delete: ");
+        int choice = keyboard.nextInt();
+        names.remove(choice - 1);
+        ages.remove(choice - 1);
+        System.out.println(" press any key to continue.....");
+        keyboard.nextLine();
+        
+    }
+    private void UPDATEENTRY()
+    {
+        Scanner keyboard = new Scanner(System.in);
+        VIEWENTRY(false);
+        System.out.println("which number to update: ");
+        int choice = keyboard.nextInt();
+        keyboard.nextLine();
+        System.out.println(" Enter name to change into: " );
+        String input = keyboard.nextLine();
+        names.set(choice - 1, input);
+        
+        System.out.println(" Enter age to change into: " );
+        input = keyboard.nextLine();
+        ages.set(choice - 1, input);
+        
+        System.out.println(" press any key to continue.....");
+        keyboard.nextLine();
+    }
+    private void EXIT()
+    {
+         exit = true;
+    }  
+    
+}    
+
